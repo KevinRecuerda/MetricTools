@@ -14,23 +14,49 @@ grammar Calculator;
 /*
  * Parser Rules
  */
- 
-expr : expr (TIMES | DIV) expr   # MulDiv
-     | expr (PLUS | MINUS) expr   # AddSub
-     | atom                  # atom
-     | '(' expr ')'         # parens
-     ;
+
+expr 
+	: plusOrMinus	# ToPlusOrMinus
+	;
+
+plusOrMinus 
+	: plusOrMinus PLUS multOrDivOrMod	# Plus
+	| plusOrMinus MINUS multOrDivOrMod	# Minus
+	| multOrDivOrMod					# ToMultOrDivOrMod
+	;
+
+multOrDivOrMod
+	: multOrDivOrMod MULT pow	# Multiplication
+	| multOrDivOrMod DIV pow	# Division
+	| multOrDivOrMod MOD pow	# Modulo
+	| pow						# ToPow
+	;
+
+pow
+	: unaryMinus POW pow # Power
+	| unaryMinus		 # ToUnaryMinus
+	;
+
+unaryMinus
+	: MINUS unaryMinus	# ChangeSign
+	| atom				# ToAtom
+	;
 
 atom 
-	: number
-	| variable
-	| func LPAREN expr RPAREN #Func
-	| LPAREN expr RPAREN
+	: num						# Number
+	| var						# Variable
+	| const						# Constant
+	| funcName LPAR expr RPAR	# Function
+	| LPAR expr RPAR			# Braces
 	;
  
-func
-	: ABS
+funcName
+	: ABS	# FuncAbs
 	;
+
+const 
+	: PI	# ContantePi
+	; 
 
 relop
 	: EQ
@@ -41,9 +67,13 @@ relop
 	| LE
 	;
 	
-number : MINUS? DIGIT+ (POINT DIGIT+)?
+num 
+	: DIGIT+ (DOT DIGIT+)?
+	;
 
-variable : MINUS? LETTER (LETTER | DIGIT | UNDERSCORE)*;
+var 
+	: LETTER (LETTER | DIGIT | UNDERSCORE)*
+	;
 
 /*
  * Lexer Rules
@@ -52,28 +82,31 @@ variable : MINUS? LETTER (LETTER | DIGIT | UNDERSCORE)*;
 /** Functions */
 ABS : 'abs' | 'ABS' | 'Abs';
 
+/** Constants */
+PI : 'pi' | 'PI' | 'Pi';
+
 /** Operators */
-PLUS : '+';
+PLUS  : '+';
 MINUS : '-';
-TIMES : '*';
-DIV : '/';
-POW : '^';
-MODULO : '%'
+MULT  : '*';
+DIV   : '/';
+POW   : '^';
+MOD   : '%';
 
 /** Relation Operators */
 EQ : '=';
 NE : '<>';
 GT : '>';
-GE : '>='
+GE : '>=';
 LT : '<';
 LE : '<=';
 
 /** Basis */
-LPAREN : '(';
-RPAREN : ')';
-DOT : '.';
-UNDERSCORE : '_';
-LETTER : [a-zA-Z];
-DIGIT : [0-9];
+LPAR		: '(';
+RPAR		: ')';
+DOT			: '.';
+UNDERSCORE	: '_';
+LETTER		: [a-zA-Z];
+DIGIT		: [0-9];
 
 WS : (' ' | '\r' | '\n') -> channel(HIDDEN);
