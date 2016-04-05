@@ -1,49 +1,113 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MathParser
+﻿namespace MathParser
 {
-    public class CalculatorVisitor : CalculatorBaseVisitor<int>
+    using System;
+
+    using Antlr4.Runtime;
+
+    public class CalculatorVisitor : CalculatorBaseVisitor<double>
     {
-        public override int VisitInt(CalculatorParser.IntContext context)
+        private readonly FunctionVisitor functionVisitor;
+
+        public CalculatorVisitor()
         {
-            return int.Parse(context.INT().GetText());
+            this.functionVisitor = new FunctionVisitor();
         }
 
-        public override int VisitAddSub(CalculatorParser.AddSubContext context)
+        public override double VisitPlus(CalculatorParser.PlusContext context)
         {
-            int left = Visit(context.expr(0));
-            int right = Visit(context.expr(1));
-            if (context.op.Type == CalculatorParser.ADD)
-            {
-                return left + right;
-            }
-            else
-            {
-                return left - right;
-            }
+            return this.VisitBinaryOpHelper(context, (left, right) => left + right);
         }
 
-        public override int VisitMulDiv(CalculatorParser.MulDivContext context)
+        public override double VisitMinus(CalculatorParser.MinusContext context)
         {
-            int left = Visit(context.expr(0));
-            int right = Visit(context.expr(1));
-            if (context.op.Type == CalculatorParser.MUL)
-            {
-                return left * right;
-            }
-            else
-            {
-                return left / right;
-            }
+            return this.VisitBinaryOpHelper(context, (left, right) => left - right);
         }
 
-        public override int VisitParens(CalculatorParser.ParensContext context)
+        public override double VisitMultiplication(CalculatorParser.MultiplicationContext context)
         {
-            return Visit(context.expr());
+            return this.VisitBinaryOpHelper(context, (left, right) => left * right);
         }
+
+        public override double VisitDivision(CalculatorParser.DivisionContext context)
+        {
+            return this.VisitBinaryOpHelper(context, (left, right) => left / right);
+        }
+
+        public override double VisitModulo(CalculatorParser.ModuloContext context)
+        {
+            return this.VisitBinaryOpHelper(context, (left, right) => left % right);
+        }
+
+        public override double VisitPower(CalculatorParser.PowerContext context)
+        {
+            return this.VisitBinaryOpHelper(context, Math.Pow);
+        }
+
+        public override double VisitChangeSign(CalculatorParser.ChangeSignContext context)
+        {
+            return -1 * this.Visit(context.unaryMinus());
+        }
+
+        public override double VisitFunction(CalculatorParser.FunctionContext context)
+        {
+            var function = this.functionVisitor.Visit(context.funcName());
+            var parameter = this.Visit(context.expr());
+
+            return function(parameter);
+        }
+
+        public override double VisitBraces(CalculatorParser.BracesContext context)
+        {
+            return this.Visit(context.expr());
+        }
+
+        public override double VisitNumber(CalculatorParser.NumberContext context)
+        {
+            return Convert.ToDouble(context.num().GetText());
+        }
+
+        public override double VisitVariable(CalculatorParser.VariableContext context)
+        {
+            // TODO : KR : manage this
+            return base.VisitVariable(context);
+        }
+
+        #region Functions
+        private class FunctionVisitor : CalculatorBaseVisitor<Func<double, double>>
+        {
+            public override Func<double, double> VisitFuncAbs(CalculatorParser.FuncAbsContext context)
+            {
+                return Math.Abs;
+            }
+        }
+        #endregion
+
+        #region Constants
+        public override double VisitContantePi(CalculatorParser.ContantePiContext context)
+        {
+            return Math.PI;
+        }
+        #endregion
+
+
+        #region Helper
+        private double VisitBinaryOpHelper(ParserRuleContext context, Func<double, double, double> apply)
+        {
+            var left = this.WalkLeft(context);
+            var right = this.WalkRight(context);
+
+            return apply(left, right);
+        }
+
+        private double WalkLeft(ParserRuleContext context)
+        {
+            return this.Visit(context.GetRuleContext<ParserRuleContext>(0));
+        }
+
+        private double WalkRight(ParserRuleContext context)
+        {
+            return this.Visit(context.GetRuleContext<ParserRuleContext>(1));
+        }
+        #endregion
     }
 }
