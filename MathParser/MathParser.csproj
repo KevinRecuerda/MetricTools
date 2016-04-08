@@ -68,6 +68,7 @@
     <Compile Include="..\AntlrGrammarGenerator\obj\Debug\CalculatorVisitor.cs">
       <Link>Grammar\CalculatorVisitor.cs</Link>
     </Compile>
+    <Compile Include="CalculatorException.cs" />
     <Compile Include="CalculatorVisitor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

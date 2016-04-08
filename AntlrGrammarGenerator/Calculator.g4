@@ -11,76 +11,102 @@ grammar Calculator;
     protected const int HIDDEN = Hidden;
 }
  
+
 /*
  * Parser Rules
  */
 
 expr 
-	: plusOrMinus	# ToPlusOrMinus
+	: orExpr	# ToOrExpr
 	;
 
-plusOrMinus 
-	: plusOrMinus PLUS multOrDivOrMod	# Plus
-	| plusOrMinus MINUS multOrDivOrMod	# Minus
-	| multOrDivOrMod					# ToMultOrDivOrMod
+orExpr
+	: orExpr OR andExpr	# Or
+	| andExpr			# ToAndExpr
 	;
 
-multOrDivOrMod
-	: multOrDivOrMod MULT pow	# Multiplication
-	| multOrDivOrMod DIV pow	# Division
-	| multOrDivOrMod MOD pow	# Modulo
-	| pow						# ToPow
+andExpr
+	: andExpr AND equalityExpr	# And
+	| equalityExpr				# ToEqualityExpr
 	;
 
-pow
-	: unaryMinus POW pow # Power
-	| unaryMinus		 # ToUnaryMinus
+equalityExpr
+	: equalityExpr EQ relationalExpr # Equal
+	| equalityExpr NE relationalExpr # NotEqual
+	| relationalExpr				 # ToRelationalExpr
 	;
 
-unaryMinus
-	: MINUS unaryMinus	# ChangeSign
+relationalExpr
+	: relationalExpr GT plusOrMinusExpr # Greater
+	| relationalExpr GE plusOrMinusExpr # GreaterOrEqual
+	| relationalExpr LT plusOrMinusExpr # Lower
+	| relationalExpr LE plusOrMinusExpr # LowerOrEqual
+	| plusOrMinusExpr					# ToPlusOrMinusExpr
+	;
+
+plusOrMinusExpr 
+	: plusOrMinusExpr PLUS multOrDivOrModExpr	# Plus
+	| plusOrMinusExpr MINUS multOrDivOrModExpr	# Minus
+	| multOrDivOrModExpr						# ToMultOrDivOrModExpr
+	;
+
+multOrDivOrModExpr
+	: multOrDivOrModExpr MULT powExpr	# Multiplication
+	| multOrDivOrModExpr DIV powExpr	# Division
+	| multOrDivOrModExpr MOD powExpr	# Modulo
+	| powExpr							# ToPowExpr
+	;
+
+powExpr
+	: unaryExpr POW powExpr # Power
+	| unaryExpr				# ToUnaryExpr
+	;
+
+unaryExpr
+	: MINUS unaryExpr	# ChangeSign
+	| NOT unaryExpr		# Not
 	| atom				# ToAtom
 	;
 
 atom 
-	: num						# Number
-	| var						# Variable
-	| const						# Constant
-	| funcName LPAR expr RPAR	# Function
-	| LPAR expr RPAR			# Braces
+	: funcName LPAR plusOrMinusExpr RPAR	# Function
+	| LPAR expr RPAR						# Braces
+	| const									# Constant
+	| num									# Number
+	| str									# String
+	| bool									# Boolean
+	| var									# Variable
 	;
  
 funcName
-	: ABS	# FuncAbs
-	;
-
-const 
-	: PI	# ContantePi
-	; 
-
-relop
-	: EQ
-	| NE
-	| GT
-	| GE
-	| LT
-	| LE
-	;
-	
-num 
-	: DIGIT+ (DOT DIGIT+)?
+	: var
 	;
 
 var 
 	: LETTER (LETTER | DIGIT | UNDERSCORE)*
 	;
 
+const 
+	: PI	# ContantePi
+	; 
+	
+num 
+	: DIGIT+ (DOT DIGIT+)?
+	;
+
+str
+	: QUOTE (LETTER | DIGIT | UNDERSCORE | SPACE)* QUOTE
+	;
+
+bool
+	: TRUE
+	| FALSE
+	;
+
+
 /*
  * Lexer Rules
  */
-
-/** Functions */
-ABS : 'abs' | 'ABS' | 'Abs';
 
 /** Constants */
 PI : 'pi' | 'PI' | 'Pi';
@@ -93,18 +119,33 @@ DIV   : '/';
 POW   : '^';
 MOD   : '%';
 
-/** Relation Operators */
-EQ : '=';
-NE : '<>';
+/** Conditional Operators */
+AND : '&&';
+OR  : '||';
+
+/** Equality Operators */
+EQ : '='  | '==';
+NE : '<>' | '!=';
+
+/** Unary Operators */
+NOT  : '!';
+
+/** Relational Operators */
 GT : '>';
 GE : '>=';
 LT : '<';
 LE : '<=';
 
+/** Booleans */
+TRUE  : 'true';
+FALSE : 'false';
+
 /** Basis */
 LPAR		: '(';
 RPAR		: ')';
 DOT			: '.';
+QUOTE		: ';';
+SPACE		: ' ';
 UNDERSCORE	: '_';
 LETTER		: [a-zA-Z];
 DIGIT		: [0-9];
