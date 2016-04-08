@@ -24,54 +24,56 @@
                 };
         }
 
-        public override double VisitPlus(CalculatorParser.PlusContext context)
-        {
-            return this.VisitBinaryOpHelper(context, (left, right) => left + right);
-        }
+        //public override double VisitPlus(CalculatorParser.PlusContext context)
+        //{
+        //    return this.VisitBinaryOpHelper(context, (left, right) => left + right);
+        //}
 
-        public override double VisitMinus(CalculatorParser.MinusContext context)
-        {
-            return this.VisitBinaryOpHelper(context, (left, right) => left - right);
-        }
+        //public override double VisitMinus(CalculatorParser.MinusContext context)
+        //{
+        //    return this.VisitBinaryOpHelper(context, (left, right) => left - right);
+        //}
 
-        public override double VisitMultiplication(CalculatorParser.MultiplicationContext context)
-        {
-            return this.VisitBinaryOpHelper(context, (left, right) => left * right);
-        }
+        //public override double VisitMultiplication(CalculatorParser.MultiplicationContext context)
+        //{
+        //    return this.VisitBinaryOpHelper(context, (left, right) => left * right);
+        //}
 
-        public override double VisitDivision(CalculatorParser.DivisionContext context)
-        {
-            return this.VisitBinaryOpHelper(context, (left, right) => left / right);
-        }
+        //public override double VisitDivision(CalculatorParser.DivisionContext context)
+        //{
+        //    return this.VisitBinaryOpHelper(context, (left, right) => left / right);
+        //}
 
-        public override double VisitModulo(CalculatorParser.ModuloContext context)
-        {
-            return this.VisitBinaryOpHelper(context, (left, right) => left % right);
-        }
+        //public override double VisitModulo(CalculatorParser.ModuloContext context)
+        //{
+        //    return this.VisitBinaryOpHelper(context, (left, right) => left % right);
+        //}
 
-        public override double VisitPower(CalculatorParser.PowerContext context)
-        {
-            return this.VisitBinaryOpHelper(context, Math.Pow);
-        }
+        //public override double VisitPower(CalculatorParser.PowerContext context)
+        //{
+        //    return this.VisitBinaryOpHelper(context, Math.Pow);
+        //}
 
-        public override double VisitChangeSign(CalculatorParser.ChangeSignContext context)
-        {
-            return -1 * this.Visit(context.unaryExpr());
-        }
+        //public override double VisitChangeSign(CalculatorParser.ChangeSignContext context)
+        //{
+        //    return -1 * this.Visit(context.unaryExpr());
+        //}
 
-        public override double VisitFunction(CalculatorParser.FunctionContext context)
-        {
-            var functionName = context.funcName().GetText();
-            Func<double, double> function;
-            if (!this.functionsByName.TryGetValue(functionName.ToLower(), out function))
-            {
-                throw new CalculatorException(string.Format("Cannot find function '{0}'", functionName));
-            }
+        //public override double VisitFunction(CalculatorParser.FunctionContext context)
+        //{
+        //    var functionName = context.funcName().GetText();
+        //    Func<double, double> function;
+        //    if (!this.functionsByName.TryGetValue(functionName.ToLower(), out function))
+        //    {
+        //        throw new CalculatorException(string.Format("Cannot find function '{0}'", functionName));
+        //    }
 
-            var parameter = this.Visit(context.plusOrMinusExpr());
+        //    var parameter = this.Visit(context.plusOrMinusExpr());
 
-            return function(parameter);
-        }
+        //    return function(parameter);
+        //}
+
+
 
         public override double VisitBraces(CalculatorParser.BracesContext context)
         {

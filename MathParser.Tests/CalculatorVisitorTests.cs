@@ -158,7 +158,6 @@
             IParseTree tree = parser.expr();
             
             Trace.WriteLine(tree.ToStringTree(parser));
-            Trace.WriteLine(parser.plusOrMinusExpr().ToStringTree(parser));
 
             return tree;
         }

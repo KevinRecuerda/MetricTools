@@ -15,7 +15,7 @@ grammar Calculator;
 /*
  * Parser Rules
  */
-
+ /*
 expr 
 	: orExpr	# ToOrExpr
 	;
@@ -67,23 +67,38 @@ unaryExpr
 	| NOT unaryExpr		# Not
 	| atom				# ToAtom
 	;
+	*/
+expr
+ : expr POW<assoc=right> expr           # Power
+ | MINUS expr                           # ChangeSign
+ | NOT expr                             # Not
+ | expr op=(MULT | DIV | MOD) expr      # MultiplicationExpr
+ | expr op=(PLUS | MINUS) expr          # AdditiveExpr
+ | expr op=(LE | GE | LT | GT) expr		# RelationalExpr
+ | expr op=(EQ | NE) expr               # EqualityExpr
+ | expr AND expr                        # AndExpr
+ | expr OR expr                         # OrExpr
+ | atom                                 # AtomExpr
+ ;
 
 atom 
-	: funcName LPAR plusOrMinusExpr RPAR	# Function
+	: funcName LPAR expr RPAR	# Function
 	| LPAR expr RPAR						# Braces
-	| const									# Constant
 	| num									# Number
-	| str									# String
 	| bool									# Boolean
+	| const									# Constant
 	| var									# Variable
+	| str									# String
 	;
+
  
 funcName
 	: var
 	;
 
 var 
-	: LETTER (LETTER | DIGIT | UNDERSCORE)*
+: ID
+	//: LETTER (LETTER | DIGIT | UNDERSCORE)*
 	;
 
 const 
@@ -91,11 +106,13 @@ const
 	; 
 	
 num 
-	: DIGIT+ (DOT DIGIT+)?
+: NUMBER
+	//: DIGIT+ (DOT DIGIT+)?
 	;
 
 str
-	: QUOTE (LETTER | DIGIT | UNDERSCORE | SPACE)* QUOTE
+: STRING
+	//: QUOTE (LETTER | DIGIT | UNDERSCORE | SPACE)* QUOTE
 	;
 
 bool
@@ -143,11 +160,24 @@ FALSE : 'false';
 /** Basis */
 LPAR		: '(';
 RPAR		: ')';
-DOT			: '.';
-QUOTE		: ';';
-SPACE		: ' ';
-UNDERSCORE	: '_';
-LETTER		: [a-zA-Z];
-DIGIT		: [0-9];
+//DOT			: '.';
+//QUOTE		: ';';
+//SPACE		: ' ';
+//UNDERSCORE	: '_';
+//LETTER		: [a-zA-Z];
+//DIGIT		: [0-9];
+
+
+ID
+	: [a-zA-Z] [a-zA-Z_0-9]*
+	;
+
+NUMBER
+	: [0-9]+ -'.' [0-9]*+)?
+	;
+
+STRING
+	: '"' (~["\r\n] | '""')* '"'
+	;
 
 WS : (' ' | '\r' | '\n') -> channel(HIDDEN);
