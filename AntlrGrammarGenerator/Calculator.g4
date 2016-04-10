@@ -69,26 +69,26 @@ unaryExpr
 	;
 	*/
 expr
- : expr POW<assoc=right> expr           # Power
- | MINUS expr                           # ChangeSign
+ : MINUS expr                           # ChangeSign
  | NOT expr                             # Not
- | expr op=(MULT | DIV | MOD) expr      # MultiplicationExpr
- | expr op=(PLUS | MINUS) expr          # AdditiveExpr
+ | expr POW<assoc=right> expr           # Power
+ | expr op=(MULT | DIV | MOD) expr      # MultOrDivOrModExpr
+ | expr op=(PLUS | MINUS) expr          # PlusOrMinusExpr
  | expr op=(LE | GE | LT | GT) expr		# RelationalExpr
  | expr op=(EQ | NE) expr               # EqualityExpr
  | expr AND expr                        # AndExpr
  | expr OR expr                         # OrExpr
- | atom                                 # AtomExpr
+ | atom                                 # ToAtomExpr
  ;
 
 atom 
-	: funcName LPAR expr RPAR	# Function
-	| LPAR expr RPAR						# Braces
-	| num									# Number
-	| bool									# Boolean
-	| const									# Constant
-	| var									# Variable
-	| str									# String
+	: funcName OBRACE expr CBRACE	# Function
+	| OBRACE expr CBRACE			# Braces
+	| num							# Number
+	| bool							# Boolean
+	| const							# Constant
+	| var							# Variable
+	| str							# String
 	;
 
  
@@ -158,8 +158,8 @@ TRUE  : 'true';
 FALSE : 'false';
 
 /** Basis */
-LPAR		: '(';
-RPAR		: ')';
+OBRACE		: '(';
+CBRACE		: ')';
 //DOT			: '.';
 //QUOTE		: ';';
 //SPACE		: ' ';
@@ -173,7 +173,7 @@ ID
 	;
 
 NUMBER
-	: [0-9]+ -'.' [0-9]*+)?
+	: [0-9]+ ('.' [0-9]+)?
 	;
 
 STRING

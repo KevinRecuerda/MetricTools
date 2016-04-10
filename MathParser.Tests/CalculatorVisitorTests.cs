@@ -31,7 +31,7 @@
 
         [TestCase("1 / 2 * 3", 1.5)]
         [TestCase("3 / 3 / 2", 0.5)]
-        [TestCase("2 ^ 2 ^ 3", 0.5)]
+        [TestCase("2 ^ 2 ^ 3", 64)]
         [TestCase("40 + 10 - (2*40) + (100/40) + 0.2", -27.3)]
         public void Should_manage_priority_When_Visit(string formula, double expected)
         {

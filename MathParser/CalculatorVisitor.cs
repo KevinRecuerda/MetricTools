@@ -1,4 +1,7 @@
-﻿namespace MathParser
+﻿using System.Globalization;
+using static MathParser.CalculatorParser;
+
+namespace MathParser
 {
     using System;
     using System.Collections.Generic;
@@ -74,18 +77,74 @@
         //}
 
 
+        public override double VisitChangeSign(ChangeSignContext context)
+        {
+            return -1 * this.Visit(context.expr());
+        }
 
-        public override double VisitBraces(CalculatorParser.BracesContext context)
+        public override double VisitPower(PowerContext context)
+        {
+            return this.VisitBinaryOperation(context, POW);
+        }
+
+        public override double VisitMultOrDivOrModExpr(MultOrDivOrModExprContext context)
+        {
+            return this.VisitBinaryOperation(context, context.op.Type);
+        }
+
+        public override double VisitPlusOrMinusExpr(PlusOrMinusExprContext context)
+        {
+            return this.VisitBinaryOperation(context, context.op.Type);
+        }
+
+        private double VisitBinaryOperation(ParserRuleContext context, int op)
+        {
+            var left = this.WalkLeft(context);
+            var right = this.WalkRight(context);
+
+            switch (op)
+            {
+                case PLUS:
+                    return left + right;
+                case MINUS:
+                    return left - right;
+                case MULT:
+                    return left * right;
+                case DIV:
+                    return left / right;
+                case MOD:
+                    return left % right;
+                case POW:
+                    return Math.Pow(left, right);
+                default:
+                    throw new CalculatorException("Invalid operator !");
+            }
+        }
+        public override double VisitFunction(CalculatorParser.FunctionContext context)
+        {
+            var functionName = context.funcName().GetText();
+            Func<double, double> function;
+            if (!this.functionsByName.TryGetValue(functionName.ToLower(), out function))
+            {
+                throw new CalculatorException(string.Format("Cannot find function '{0}'", functionName));
+            }
+
+            var parameter = this.Visit(context.expr());
+
+            return function(parameter);
+        }
+
+        public override double VisitBraces(BracesContext context)
         {
             return this.Visit(context.expr());
         }
 
-        public override double VisitNumber(CalculatorParser.NumberContext context)
+        public override double VisitNumber(NumberContext context)
         {
-            return Convert.ToDouble(context.num().GetText());
+            return Convert.ToDouble(context.num().GetText(), CultureInfo.InvariantCulture);
         }
 
-        public override double VisitVariable(CalculatorParser.VariableContext context)
+        public override double VisitVariable(VariableContext context)
         {
             var variableName = context.var().GetText();
             double value;
@@ -98,7 +157,7 @@
         }
 
         #region Constants
-        public override double VisitContantePi(CalculatorParser.ContantePiContext context)
+        public override double VisitContantePi(ContantePiContext context)
         {
             return Math.PI;
         }
