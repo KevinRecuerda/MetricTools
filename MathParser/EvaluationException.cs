@@ -2,9 +2,9 @@
 {
     using System;
 
-    public class CalculatorException : Exception
+    public class EvaluationException : Exception
     {
-        public CalculatorException(string message)
+        public EvaluationException(string message)
             : base(message)
         {
         }

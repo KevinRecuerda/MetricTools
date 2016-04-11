@@ -68,9 +68,16 @@
     <Compile Include="..\AntlrGrammarGenerator\obj\Debug\CalculatorVisitor.cs">
       <Link>Grammar\CalculatorVisitor.cs</Link>
     </Compile>
-    <Compile Include="CalculatorException.cs" />
+    <Compile Include="EvaluationException.cs" />
+    <Compile Include="CalculatorListener.cs" />
     <Compile Include="CalculatorVisitor.cs" />
+    <Compile Include="Expression.cs" />
+    <Compile Include="IMathParserService.cs" />
+    <Compile Include="MathParserService.cs" />
+    <Compile Include="ParsingException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ThrowingErrorListener.cs" />
+    <Compile Include="CalculatorValue.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
