@@ -15,3 +15,7 @@
 
 	https://github.com/bkiers/Mu/blob/master/src/main/antlr4/mu/Mu.g4
 	http://ncalc.codeplex.com/SourceControl/latest#Grammar/NCalc.g
+	
+## TODO
+
+- Improve grammar : separating arithmetic op .. 
