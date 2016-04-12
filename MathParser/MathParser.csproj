@@ -82,12 +82,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\AntlrGrammarGenerator\AntlrGrammarGenerator.csproj">
-      <Project>{16b8757a-9da4-4786-835b-d794cea7cb2f}</Project>
-      <Name>AntlrGrammarGenerator</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

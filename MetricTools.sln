@@ -7,18 +7,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetricTools", "MetricTools\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetricToolsTests", "MetricToolsTests\MetricToolsTests.csproj", "{5CC97248-6FAA-4033-A9ED-22AFD21695B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathParser", "MathParser\MathParser.csproj", "{55FFAFA7-5F46-4E18-85FE-26FDAF8715AC}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AntlrGrammarGenerator", "AntlrGrammarGenerator\AntlrGrammarGenerator.csproj", "{16B8757A-9DA4-4786-835B-D794CEA7CB2F}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MathParser.Tests", "MathParser.Tests\MathParser.Tests.csproj", "{0A06F9C7-A066-4CD2-85E2-8D080B4C0F7B}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{209D7AD4-415F-4714-987D-AF4A026687EE}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evaluator", "Evaluator\Evaluator.csproj", "{71BDEF01-1702-4D14-BFFF-6C3770017526}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evaluator.Grammar", "Evaluator.Grammar\Evaluator.Grammar.csproj", "{151C0F57-DF4F-4F70-BBAF-A96A89D3DE73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Evaluator.Tests", "Evaluator.Tests\Evaluator.Tests.csproj", "{C6A53ACC-B86F-4854-B9F6-A71392FD2ACA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -34,18 +34,18 @@ Global
 		{5CC97248-6FAA-4033-A9ED-22AFD21695B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CC97248-6FAA-4033-A9ED-22AFD21695B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CC97248-6FAA-4033-A9ED-22AFD21695B3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{55FFAFA7-5F46-4E18-85FE-26FDAF8715AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{55FFAFA7-5F46-4E18-85FE-26FDAF8715AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{55FFAFA7-5F46-4E18-85FE-26FDAF8715AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{55FFAFA7-5F46-4E18-85FE-26FDAF8715AC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{16B8757A-9DA4-4786-835B-D794CEA7CB2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{16B8757A-9DA4-4786-835B-D794CEA7CB2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{16B8757A-9DA4-4786-835B-D794CEA7CB2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{16B8757A-9DA4-4786-835B-D794CEA7CB2F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0A06F9C7-A066-4CD2-85E2-8D080B4C0F7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0A06F9C7-A066-4CD2-85E2-8D080B4C0F7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0A06F9C7-A066-4CD2-85E2-8D080B4C0F7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0A06F9C7-A066-4CD2-85E2-8D080B4C0F7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71BDEF01-1702-4D14-BFFF-6C3770017526}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71BDEF01-1702-4D14-BFFF-6C3770017526}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71BDEF01-1702-4D14-BFFF-6C3770017526}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71BDEF01-1702-4D14-BFFF-6C3770017526}.Release|Any CPU.Build.0 = Release|Any CPU
+		{151C0F57-DF4F-4F70-BBAF-A96A89D3DE73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{151C0F57-DF4F-4F70-BBAF-A96A89D3DE73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{151C0F57-DF4F-4F70-BBAF-A96A89D3DE73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{151C0F57-DF4F-4F70-BBAF-A96A89D3DE73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6A53ACC-B86F-4854-B9F6-A71392FD2ACA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6A53ACC-B86F-4854-B9F6-A71392FD2ACA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6A53ACC-B86F-4854-B9F6-A71392FD2ACA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6A53ACC-B86F-4854-B9F6-A71392FD2ACA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

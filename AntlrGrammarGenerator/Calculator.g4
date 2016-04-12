@@ -161,7 +161,7 @@ FALSE : 'false';
 OBRACE		: '(';
 CBRACE		: ')';
 //DOT			: '.';
-//QUOTE		: ';';
+QUOTE		: '"';
 //SPACE		: ' ';
 //UNDERSCORE	: '_';
 //LETTER		: [a-zA-Z];
@@ -177,7 +177,7 @@ NUMBER
 	;
 
 STRING
-	: '"' (~["\r\n] | '""')* '"'
+	: QUOTE (~["\r\n] | '""')* QUOTE
 	;
 
 WS : (' ' | '\r' | '\n') -> channel(HIDDEN);
