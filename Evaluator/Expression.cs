@@ -81,7 +81,7 @@
 
             walker.Walk(evaluatorListener, parseTree);
 
-            return evaluatorListener.Variables;
+            return evaluatorListener.Variables.ToList();
         }
     }
 }

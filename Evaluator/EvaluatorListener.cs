@@ -6,11 +6,11 @@
 
     public class EvaluatorListener : EvaluatorBaseListener
     {
-        public List<string> Variables { get; set; }
+        public HashSet<string> Variables { get; set; }
 
         public EvaluatorListener()
         {
-            this.Variables = new List<string>();
+            this.Variables = new HashSet<string>();
         }
 
         public override void EnterVariable(EvaluatorParser.VariableContext context)
